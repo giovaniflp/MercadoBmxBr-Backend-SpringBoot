@@ -1,0 +1,12 @@
+services:
+  mongodb:
+    image: 'mongo:latest'
+    container_name: 'mongodb'
+    environment:
+      MONGO_INITDB_DATABASE: mercadoBmxBr
+      MONGO_INITDB_ROOT_PASSWORD: Oxiprana169
+      MONGO_INITDB_ROOT_USERNAME: giovaniflp
+    ports:
+      - '27018:27017'
+    volumes:
+      - "./database-data:/data/db"
