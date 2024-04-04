@@ -35,4 +35,19 @@ public class usersService {
         usersRepository.deleteById(id);
         return "Usuário deletado com sucesso!";
     }
+
+    @Transactional
+    public usersModel updateUser(String id, usersModel userData) {
+        usersModel user = usersRepository.findById(id);
+        if (userData.getName() != null) {
+            user.setName(userData.getName());
+        }
+        if (userData.getEmail() != null){
+            user.setEmail(userData.getEmail());
+        }
+        if (userData.getPassword() != null){
+            user.setPassword(userData.getPassword());
+        }
+        return usersRepository.save(user);
+    }
 }

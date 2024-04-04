@@ -37,4 +37,10 @@ public class usersController {
     public String deleteUser(@PathVariable String id) {
         return usersService.deleteUser(id);
     }
+
+    @PatchMapping("/{id}")
+    public usersModel updateUser(@PathVariable String id, @RequestBody usersModel userData) {
+        return usersService.updateUser(id, userData);
+    }
+
 }
