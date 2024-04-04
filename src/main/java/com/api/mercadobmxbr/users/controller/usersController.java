@@ -8,32 +8,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import com.api.mercadobmxbr.users.service.usersService;
 
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin
 public class usersController {
-    @Autowired
-    private usersRepository repository;
 
-    @GetMapping("/all")
-    public List<usersModel> findAll() {
-        return repository.findAll();
+    @Autowired
+    usersService usersService;
+
+    @GetMapping
+    public List<usersModel> findAllUsers() {
+        return usersService.findAllUsers();
     }
 
     @GetMapping("/{id}")
-    public usersModel findByIdString(@PathVariable ObjectId id) {
-       return repository.findById(id);
+    public usersModel findUserById(@PathVariable String id) {
+        return usersService.findUserById(id);
     }
 
-    @PostMapping("/save")
-    public usersModel save(@RequestBody usersModel user) {
-        return repository.save(user);
+    @PostMapping
+    public usersModel registerUser(@RequestBody usersModel userData) {
+        return usersService.registerUser(userData);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String delete(@PathVariable ObjectId id) {
-        repository.deleteById(id);
-        return "Usuário deletado com sucesso!";
+    public String deleteUser(@PathVariable String id) {
+        return usersService.deleteUser(id);
     }
 }
