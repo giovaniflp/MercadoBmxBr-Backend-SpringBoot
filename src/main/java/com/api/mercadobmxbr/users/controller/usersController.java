@@ -1,9 +1,9 @@
 package com.api.mercadobmxbr.users.controller;
 
 import com.api.mercadobmxbr.users.model.usersModel;
-import com.api.mercadobmxbr.users.repository.usersRepository;
 
-import org.bson.types.ObjectId;
+import jakarta.annotation.security.PermitAll;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
