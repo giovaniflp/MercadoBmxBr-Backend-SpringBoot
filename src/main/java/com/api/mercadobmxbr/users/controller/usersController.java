@@ -19,6 +19,7 @@ public class usersController {
     usersService usersService;
 
     @GetMapping
+    @PermitAll
     public List<usersModel> findAllUsers() {
         return usersService.findAllUsers();
     }
@@ -28,9 +29,16 @@ public class usersController {
         return usersService.findUserById(id);
     }
 
-    @PostMapping
+    @PostMapping("/register")
+    @PermitAll
     public usersModel registerUser(@RequestBody usersModel userData) {
         return usersService.registerUser(userData);
+    }
+
+    @PostMapping("/login")
+    @PermitAll
+    public String loginUser(@RequestBody String email, String password){
+        return "Implement";
     }
 
     @DeleteMapping("/delete/{id}")

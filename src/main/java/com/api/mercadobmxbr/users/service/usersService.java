@@ -2,7 +2,6 @@ package com.api.mercadobmxbr.users.service;
 
 import com.api.mercadobmxbr.users.repository.usersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.api.mercadobmxbr.users.model.usersModel;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ public class usersService {
     private usersRepository usersRepository;
 
     @Autowired
-    private securityConfig passwordEncoder;
+    private securityConfig securityConfig;
 
     @Transactional
     public List<usersModel> findAllUsers() {
@@ -31,7 +30,7 @@ public class usersService {
 
     @Transactional
     public usersModel registerUser(usersModel userData) {
-        userData.setPassword(passwordEncoder.encoder().encode(userData.getPassword()));
+        userData.setPassword(securityConfig.bCryptPasswordEncoder().encode(userData.getPassword()));
         return usersRepository.save(userData);
     }
 
@@ -55,4 +54,5 @@ public class usersService {
         }
         return usersRepository.save(user);
     }
+
 }
