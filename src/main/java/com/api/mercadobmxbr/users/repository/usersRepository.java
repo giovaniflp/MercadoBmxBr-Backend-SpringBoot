@@ -5,11 +5,13 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface usersRepository
 extends MongoRepository <usersModel, Integer> {
 // Alterando o tipo de retorno dos métodos e parâmetros recebidos
     usersModel findById(String id);
     void deleteById(String id);
-    usersModel findByEmail(String email);
+    Optional<usersModel> findByEmail(String email);
 }

@@ -11,8 +11,8 @@ import java.util.List;
 import com.api.mercadobmxbr.users.service.usersService;
 
 @RestController
-@RequestMapping("/api/users")
 @CrossOrigin
+@RequestMapping("/api/users")
 public class usersController {
 
     @Autowired
@@ -33,12 +33,6 @@ public class usersController {
     @PermitAll
     public usersModel registerUser(@RequestBody usersModel userData) {
         return usersService.registerUser(userData);
-    }
-
-    @PostMapping("/login")
-    @PermitAll
-    public String loginUser(@RequestBody String email, String password){
-        return "Implement";
     }
 
     @DeleteMapping("/delete/{id}")
