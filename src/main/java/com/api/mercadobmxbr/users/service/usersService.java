@@ -1,12 +1,14 @@
 package com.api.mercadobmxbr.users.service;
 
 import com.api.mercadobmxbr.users.repository.usersRepository;
+import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.api.mercadobmxbr.users.model.usersModel;
 import org.springframework.transaction.annotation.Transactional;
 import com.api.mercadobmxbr.security.securityConfig;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -53,6 +55,13 @@ public class usersService {
             user.setPassword(userData.getPassword());
         }
         return usersRepository.save(user);
+    }
+
+    public String parseJWT(String accessToken) throws ParseException {
+            var decodedJWT = SignedJWT.parse(accessToken);
+            var header = decodedJWT.getHeader().toString();
+            var payload = decodedJWT.getPayload().toString();
+            return header + "\n" + payload;
     }
 
 }

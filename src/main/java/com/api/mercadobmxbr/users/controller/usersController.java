@@ -19,7 +19,6 @@ public class usersController {
     usersService usersService;
 
     @GetMapping
-    @PermitAll
     public List<usersModel> findAllUsers() {
         return usersService.findAllUsers();
     }

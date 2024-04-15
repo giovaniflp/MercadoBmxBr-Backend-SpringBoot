@@ -2,17 +2,21 @@ package com.api.mercadobmxbr.users.controller;
 
 import com.api.mercadobmxbr.users.service.loginRequest;
 import com.api.mercadobmxbr.users.service.loginResponse;
+import com.api.mercadobmxbr.users.service.usersService;
+
+
+import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.api.mercadobmxbr.users.repository.usersRepository;
 
+import java.text.ParseException;
 import java.time.Instant;
+import java.util.Map;
 
 
 @RestController
@@ -24,7 +28,13 @@ public class tokenController {
     JwtEncoder jwtEncoder;
 
     @Autowired
+    JwtDecoder jwtDecoder;
+
+    @Autowired
     usersRepository userRepository;
+
+    @Autowired
+    usersService usersService;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -53,6 +63,13 @@ public class tokenController {
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
         return ResponseEntity.ok(new loginResponse(jwtValue, expiresIn));
+    }
+
+    @GetMapping("/jwtDecode")
+    public Map<String, Object> jwtDecode(@RequestHeader("Authorization") String authorization) throws ParseException {
+        var token = authorization.replace("Bearer ", "");
+        var jwt = SignedJWT.parse(token);
+        return jwt.getJWTClaimsSet().getClaims();
     }
 
 }
