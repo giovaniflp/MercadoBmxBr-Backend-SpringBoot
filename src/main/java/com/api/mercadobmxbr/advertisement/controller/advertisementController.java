@@ -25,6 +25,11 @@ public class advertisementController {
         return advertisementService.findAdvertisementById(id);
     }
 
+    @GetMapping("/user/{userId}")
+    public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {
+        return advertisementService.findAdvertisementByUser(userId);
+    }
+
     @PostMapping("/register")
     public advertisementModel registerAdvertisement(@RequestBody advertisementModel advertisementData) {
         return advertisementService.registerAdvertisement(advertisementData);
