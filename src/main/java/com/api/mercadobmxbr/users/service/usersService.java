@@ -31,20 +31,9 @@ public class usersService {
     }
 
     @Transactional
-    public String registerUser(usersModel userData) {
-        if(compareEmail(userData.getEmail())){
-            return "Email já cadastrado! Insira outro email.";
-        } else{
-            userData.setPassword(securityConfig.bCryptPasswordEncoder().encode(userData.getPassword()));
-            usersRepository.save(userData);
-            return "Usuário cadastrado com sucesso!";
-        }
-    }
-
-    @Transactional
-    public Boolean compareEmail(String email) {
-        var user = usersRepository.findByEmail(email);
-        return user.isPresent();
+    public usersModel registerUser(usersModel userData) {
+        userData.setPassword(securityConfig.bCryptPasswordEncoder().encode(userData.getPassword()));
+        return usersRepository.save(userData);
     }
 
     @Transactional

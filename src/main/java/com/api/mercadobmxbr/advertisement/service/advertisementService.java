@@ -3,7 +3,6 @@ import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import com.api.mercadobmxbr.advertisement.repository.advertisementRepository;
 
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-
 @Service
 public class advertisementService {
 
     @Autowired
     private advertisementRepository advertisementRepository;
-
 
     @Transactional
     public List<advertisementModel> findAllAdvertisements() {
@@ -38,7 +35,7 @@ public class advertisementService {
     }
 
     @Transactional
-    public advertisementModel registerAdvertisement(advertisementModel advertisementModel){;
+    public advertisementModel registerAdvertisement(advertisementModel advertisementModel){
         return advertisementRepository.save(advertisementModel);
     }
 
