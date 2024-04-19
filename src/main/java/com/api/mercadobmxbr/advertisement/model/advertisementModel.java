@@ -38,8 +38,7 @@ public class advertisementModel {
     @NotNull
     private String localidade;
     @NotNull
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate dataPostagem;
+    private String dataPostagem;
     //Estará hospedado na nuvem, então o que será salvo no banco é o link da imagem
     @NotNull
     private String imagem;

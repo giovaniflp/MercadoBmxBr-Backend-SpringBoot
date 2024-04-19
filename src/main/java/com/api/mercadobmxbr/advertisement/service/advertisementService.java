@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -36,6 +37,9 @@ public class advertisementService {
 
     @Transactional
     public advertisementModel registerAdvertisement(advertisementModel advertisementModel){
+        java.time.LocalDate currentDate = java.time.LocalDate.now();
+        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        advertisementModel.setDataPostagem(formattedDate);
         return advertisementRepository.save(advertisementModel);
     }
 
