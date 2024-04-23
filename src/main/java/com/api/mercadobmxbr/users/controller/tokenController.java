@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.api.mercadobmxbr.users.repository.usersRepository;
+import com.api.mercadobmxbr.users.repository.tokenRepository;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -31,7 +32,7 @@ public class tokenController {
     JwtDecoder jwtDecoder;
 
     @Autowired
-    usersRepository userRepository;
+    tokenRepository tokenRepository;
 
     @Autowired
     usersService usersService;
@@ -42,10 +43,12 @@ public class tokenController {
     @PostMapping("/login")
     public ResponseEntity<loginResponse> login(@RequestBody loginRequest loginRequest) {
 
-        var user = userRepository.findByEmail(loginRequest.email());
+        var user = tokenRepository.findByEmail(loginRequest.email());
 
         if (user.isEmpty() || !user.get().isLoginCorrect(loginRequest, bCryptPasswordEncoder)) {
             throw new BadCredentialsException("user or password is invalid!");
+        } else if (user.get().getActivationSituation() == false) {
+            return ResponseEntity.badRequest().build();
         }
 
         var now = Instant.now();

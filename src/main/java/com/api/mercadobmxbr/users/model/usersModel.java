@@ -18,6 +18,8 @@ public class usersModel {
     private String name;
     private String email;
     private String password;
+    private String verificationCode;
+    private Boolean activationSituation;
 
     public boolean isLoginCorrect(loginRequest loginRequest, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(loginRequest.password(), this.password);

@@ -58,7 +58,8 @@ public class securityConfig {
                         authorize.requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/token/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/token/jwtDecode").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/users/sendCode").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/users/activate").permitAll()
 
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable()).oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))

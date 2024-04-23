@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 import com.api.mercadobmxbr.users.service.usersService;
 
 @RestController
@@ -32,6 +34,21 @@ public class usersController {
     @PermitAll
     public usersModel registerUser(@RequestBody usersModel userData) {
         return usersService.registerUser(userData);
+    }
+
+    @PostMapping("/sendCode")
+    @PermitAll
+    public void verificationCode(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        usersService.verificationCode(email);
+    }
+
+    @PostMapping("/activate")
+    @PermitAll
+    public void activateUser(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String code = requestBody.get("code");
+        usersService.activateUser(email, code);
     }
 
     @DeleteMapping("/delete/{id}")
