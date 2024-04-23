@@ -52,6 +52,15 @@ public class usersService {
     }
 
     @Transactional
+    public void lostPassword(String email) {
+        String randomPassword = UUID.randomUUID().toString().substring(0, 6);
+        usersModel user = usersRepository.findByEmail(email);
+        user.setPassword(securityConfig.bCryptPasswordEncoder().encode(randomPassword));
+        usersRepository.save(user);
+        emailService.enviarEmailDeTexto(email, "Recuperação de senha", "Quando logar troque para uma senha de sua escolha! sua senha provisória é essa: " + randomPassword);
+    }
+
+    @Transactional
     public void activateUser(String email, String code) {
         usersModel user = usersRepository.findByEmail(email);
         if (user.getVerificationCode().equals(code)) {

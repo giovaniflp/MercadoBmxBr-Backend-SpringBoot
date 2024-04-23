@@ -51,6 +51,13 @@ public class usersController {
         usersService.activateUser(email, code);
     }
 
+    @PostMapping("/lostPassword")
+    @PermitAll
+    public void lostPassword(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        usersService.lostPassword(email);
+    }
+
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable String id) {
         return usersService.deleteUser(id);

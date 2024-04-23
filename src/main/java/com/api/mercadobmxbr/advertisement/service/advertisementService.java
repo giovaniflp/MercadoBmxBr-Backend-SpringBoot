@@ -56,4 +56,40 @@ public class advertisementService {
         return blob.getBlobUrl();
     }
 
+    @Transactional
+    public void deleteAdvertisement(String id) {
+        advertisementModel advertisement = advertisementRepository.findById(id);
+        if (advertisement != null) {
+            // Extract image file name from the URL
+            String imageUrl = advertisement.getImagem();
+            String fileName = extractFileNameFromUrl(imageUrl);
+
+            // Delete advertisement from database
+            advertisementRepository.deleteById(id);
+
+            // Delete image from Azure storage
+            if (fileName != null) {
+                deleteImage(fileName);
+            }
+        }
+    }
+
+    private void deleteImage(String fileName) {
+        BlobContainerClient containerClient = new BlobContainerClientBuilder()
+                .connectionString("DefaultEndpointsProtocol=https;AccountName=mercadobmxbr;AccountKey=wv3hSdDl89gy9Fj2KzMCTuUfpjiywNyNyLg+HD2AJz9q8B7H1FUTYitjM94BjVfsxhMzr4r88iXt+AStwfdpVA==;EndpointSuffix=core.windows.net")
+                .containerName("advertisements")
+                .buildClient();
+
+        BlobClient blob = containerClient.getBlobClient(fileName);
+        blob.delete();
+    }
+
+    private String extractFileNameFromUrl(String url) {
+        // Extract file name from the URL
+        int index = url.lastIndexOf("/");
+        if (index != -1) {
+            return url.substring(index + 1);
+        }
+        return null;
+    }
 }

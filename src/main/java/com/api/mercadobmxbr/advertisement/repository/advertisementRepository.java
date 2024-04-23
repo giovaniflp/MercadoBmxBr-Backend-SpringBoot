@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface advertisementRepository extends MongoRepository<advertisementModel, Integer> {
     advertisementModel findById(String id);
-
+    void deleteById(String id);
     List<advertisementModel> findByIdUsuario(String userId);
 }

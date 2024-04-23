@@ -37,6 +37,11 @@ public class advertisementController {
         return advertisementService.registerAdvertisement(advertisementData);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteAdvertisement(@PathVariable String id) {
+        advertisementService.deleteAdvertisement(id);
+    }
+
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         return advertisementService.uploadImage(file);

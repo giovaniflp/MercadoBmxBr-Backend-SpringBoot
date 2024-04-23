@@ -60,6 +60,7 @@ public class securityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/token/jwtDecode").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/users/sendCode").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/users/activate").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/users/lostPassword").permitAll()
 
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable()).oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
