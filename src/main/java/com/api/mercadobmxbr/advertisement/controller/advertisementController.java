@@ -27,6 +27,11 @@ public class advertisementController {
         return advertisementService.findAdvertisementById(id);
     }
 
+    @GetMapping("/category/{category}")
+    public List<advertisementModel> findAdvertisementByCategory(@PathVariable String category) {
+        return advertisementService.findAdvertisementByCategory(category);
+    }
+
     @GetMapping("/user/{userId}")
     public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {
         return advertisementService.findAdvertisementByUser(userId);

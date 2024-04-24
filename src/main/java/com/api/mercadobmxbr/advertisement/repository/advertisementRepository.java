@@ -11,4 +11,5 @@ public interface advertisementRepository extends MongoRepository<advertisementMo
     advertisementModel findById(String id);
     void deleteById(String id);
     List<advertisementModel> findByIdUsuario(String userId);
+    List<advertisementModel> findByCategoria(String categoria);
 }

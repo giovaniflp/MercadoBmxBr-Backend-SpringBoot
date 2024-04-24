@@ -31,6 +31,11 @@ public class advertisementService {
     }
 
     @Transactional
+    public List<advertisementModel> findAdvertisementByCategory(String category){
+        return advertisementRepository.findByCategoria(category);
+    }
+
+    @Transactional
     public List<advertisementModel> findAdvertisementByUser(String userId){
         return advertisementRepository.findByIdUsuario(userId);
     }
