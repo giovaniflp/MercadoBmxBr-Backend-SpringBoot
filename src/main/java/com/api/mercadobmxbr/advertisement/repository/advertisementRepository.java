@@ -2,6 +2,7 @@ package com.api.mercadobmxbr.advertisement.repository;
 
 import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,4 +13,10 @@ public interface advertisementRepository extends MongoRepository<advertisementMo
     void deleteById(String id);
     List<advertisementModel> findByIdUsuario(String userId);
     List<advertisementModel> findByCategoria(String categoria);
+
+    List<advertisementModel> findByLocalidadeAndEstadoDaPeca(String localidade, String estadoDaPeca);
+
+    List<advertisementModel> findByLocalidade(String localidade);
+
+    List<advertisementModel> findByEstadoDaPeca(String estadoDaPeca);
 }

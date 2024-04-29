@@ -6,6 +6,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,6 +34,21 @@ public class advertisementService {
     @Transactional
     public List<advertisementModel> findAdvertisementByCategory(String category){
         return advertisementRepository.findByCategoria(category);
+    }
+
+    @Transactional
+    public List<advertisementModel> findByLocalidadeAndEstadoDaPeca(String localidade,  String estadoDaPeca){
+        return advertisementRepository.findByLocalidadeAndEstadoDaPeca(localidade, estadoDaPeca);
+    }
+
+    @Transactional
+    public List<advertisementModel> findByLocalidade(String localidade){
+        return advertisementRepository.findByLocalidade(localidade);
+    }
+
+    @Transactional
+    public List<advertisementModel> findByEstadoDaPeca(String estadoDaPeca){
+        return advertisementRepository.findByEstadoDaPeca(estadoDaPeca);
     }
 
     @Transactional

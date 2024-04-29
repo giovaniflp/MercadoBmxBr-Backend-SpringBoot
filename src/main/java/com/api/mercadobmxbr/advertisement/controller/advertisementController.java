@@ -32,6 +32,21 @@ public class advertisementController {
         return advertisementService.findAdvertisementByCategory(category);
     }
 
+    @GetMapping("/category/localidade/{localidade}")
+    public List<advertisementModel> findByLocalidade(@PathVariable String localidade){
+        return advertisementService.findByLocalidade(localidade);
+    }
+
+    @GetMapping("/category/estadoDaPeca/{estadoDaPeca}")
+    public List<advertisementModel> findByEstadoDaPeca(@PathVariable String estadoDaPeca){
+        return advertisementService.findByEstadoDaPeca(estadoDaPeca);
+    }
+
+    @GetMapping("category/localidadeEstadoDaPeca/{localidade}/{estadoDaPeca}")
+    public List<advertisementModel> findByLocalidadeAndEstadoDaPeca(@PathVariable String localidade, @PathVariable String estadoDaPeca){
+        return advertisementService.findByLocalidadeAndEstadoDaPeca(localidade, estadoDaPeca);
+    }
+
     @GetMapping("/user/{userId}")
     public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {
         return advertisementService.findAdvertisementByUser(userId);
