@@ -37,18 +37,18 @@ public class advertisementService {
     }
 
     @Transactional
-    public List<advertisementModel> findByLocalidadeAndEstadoDaPeca(String localidade,  String estadoDaPeca){
-        return advertisementRepository.findByLocalidadeAndEstadoDaPeca(localidade, estadoDaPeca);
+    public List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade,  String estadoDaPeca, String category){
+        return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, category);
     }
 
     @Transactional
-    public List<advertisementModel> findByLocalidade(String localidade){
-        return advertisementRepository.findByLocalidade(localidade);
+    public List<advertisementModel> findByLocalidadeAndCategoria(String localidade, String category){
+        return advertisementRepository.findByLocalidadeAndCategoria(localidade, category);
     }
 
     @Transactional
-    public List<advertisementModel> findByEstadoDaPeca(String estadoDaPeca){
-        return advertisementRepository.findByEstadoDaPeca(estadoDaPeca);
+    public List<advertisementModel> findByEstadoDaPecaAndCategoria(String estadoDaPeca, String category){
+        return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, category);
     }
 
     @Transactional

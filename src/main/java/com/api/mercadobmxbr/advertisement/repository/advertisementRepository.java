@@ -14,9 +14,9 @@ public interface advertisementRepository extends MongoRepository<advertisementMo
     List<advertisementModel> findByIdUsuario(String userId);
     List<advertisementModel> findByCategoria(String categoria);
 
-    List<advertisementModel> findByLocalidadeAndEstadoDaPeca(String localidade, String estadoDaPeca);
+    List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade, String estadoDaPeca, String category);
 
-    List<advertisementModel> findByLocalidade(String localidade);
+    List<advertisementModel> findByLocalidadeAndCategoria(String localidade, String category);
 
-    List<advertisementModel> findByEstadoDaPeca(String estadoDaPeca);
+    List<advertisementModel> findByEstadoDaPecaAndCategoria(String estadoDaPeca, String category);
 }

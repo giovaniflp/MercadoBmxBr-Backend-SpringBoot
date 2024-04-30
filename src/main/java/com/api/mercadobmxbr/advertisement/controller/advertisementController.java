@@ -32,19 +32,19 @@ public class advertisementController {
         return advertisementService.findAdvertisementByCategory(category);
     }
 
-    @GetMapping("/category/localidade/{localidade}")
-    public List<advertisementModel> findByLocalidade(@PathVariable String localidade){
-        return advertisementService.findByLocalidade(localidade);
+    @GetMapping("/category/{category}/localidade/{localidade}")
+    public List<advertisementModel> findByLocalidadeAndCategoria(@PathVariable String localidade, @PathVariable String category){
+        return advertisementService.findByLocalidadeAndCategoria(localidade, category);
     }
 
-    @GetMapping("/category/estadoDaPeca/{estadoDaPeca}")
-    public List<advertisementModel> findByEstadoDaPeca(@PathVariable String estadoDaPeca){
-        return advertisementService.findByEstadoDaPeca(estadoDaPeca);
+    @GetMapping("/category/{category}/estadoDaPeca/{estadoDaPeca}")
+    public List<advertisementModel> findByEstadoDaPecaAndCategoria(@PathVariable String estadoDaPeca, @PathVariable String category){
+        return advertisementService.findByEstadoDaPecaAndCategoria(estadoDaPeca, category);
     }
 
-    @GetMapping("category/localidadeEstadoDaPeca/{localidade}/{estadoDaPeca}")
-    public List<advertisementModel> findByLocalidadeAndEstadoDaPeca(@PathVariable String localidade, @PathVariable String estadoDaPeca){
-        return advertisementService.findByLocalidadeAndEstadoDaPeca(localidade, estadoDaPeca);
+    @GetMapping("category/{category}/localidade/{localidade}/estadoDaPeca/{estadoDaPeca}")
+    public List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(@PathVariable String localidade, @PathVariable String estadoDaPeca, @PathVariable String category){
+        return advertisementService.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, category);
     }
 
     @GetMapping("/user/{userId}")
