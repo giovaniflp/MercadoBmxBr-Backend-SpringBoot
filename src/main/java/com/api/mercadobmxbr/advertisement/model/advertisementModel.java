@@ -1,5 +1,4 @@
 package com.api.mercadobmxbr.advertisement.model;
-import com.api.mercadobmxbr.users.model.usersModel;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
@@ -8,10 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
