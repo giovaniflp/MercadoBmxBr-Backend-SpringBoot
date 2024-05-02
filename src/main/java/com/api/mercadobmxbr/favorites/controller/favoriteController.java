@@ -36,9 +36,14 @@ public class favoriteController {
         return favoriteService.saveFavorite(favoriteModel);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void deleteFavorite(@PathVariable String id) {
-        favoriteService.delete(id);
+    @DeleteMapping("/delete/{idAnuncio}")
+    public void deleteFavorite(@PathVariable String idAnuncio) {
+        favoriteService.delete(idAnuncio);
+    }
+
+    @GetMapping("/verify/{idUsuario}/{idAnuncio}")
+    public boolean verifyFavorite(@PathVariable String idUsuario, @PathVariable String idAnuncio) {
+        return favoriteService.verifyFavorite(idUsuario, idAnuncio);
     }
 
 }

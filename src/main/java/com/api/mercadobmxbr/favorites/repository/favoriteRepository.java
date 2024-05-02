@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface favoriteRepository extends MongoRepository<favoriteModel, Integer> {
     void deleteById(String id);
+    void deleteByIdAnuncio(String idAnuncio);
     favoriteModel findById(String id);
     List<favoriteModel> findByIdUsuario(String idUsuario);
 }

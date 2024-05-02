@@ -30,8 +30,18 @@ public class favoriteService {
         return favoriteRepository.save(favoriteModel);
     }
 
-    public void delete(String id) {
-        favoriteRepository.deleteById(id);
+    public void delete(String idAnuncio) {
+        favoriteRepository.deleteByIdAnuncio(idAnuncio);
+    }
+
+    public boolean verifyFavorite(String idUsuario, String idAnuncio) {
+        List<favoriteModel> favorites = favoriteRepository.findByIdUsuario(idUsuario);
+        for (favoriteModel favorite : favorites) {
+            if (favorite.getIdAnuncio().equals(idAnuncio)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
