@@ -78,18 +78,21 @@ public class usersService {
     }
 
     @Transactional
-    public usersModel updateUser(String id, usersModel userData) {
+    public usersModel patchUser(String id,  String name, String email, String senhaAntiga, String senhaNova) {
         usersModel user = usersRepository.findById(id);
-        if (userData.getName() != null) {
-            user.setName(userData.getName());
+        if(name != null && !name.isEmpty()){
+            user.setName(name);
         }
-        if (userData.getEmail() != null) {
-            user.setEmail(userData.getEmail());
+        if(email != null && !email.isEmpty()){
+            String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
+            user.setEmail(email);
+            user.setActivationSituation(false);
+            user.setVerificationCode(codeGenerate);
+            emailService.enviarEmailDeTexto(email, "Código de verificação", "Seu novo código de verificação é: " + codeGenerate);
         }
-        if (userData.getPassword() != null) {
-            user.setPassword(userData.getPassword());
+        if(senhaNova != null && !senhaNova.isEmpty() && securityConfig.bCryptPasswordEncoder().matches(senhaAntiga, user.getPassword())){
+            user.setPassword(securityConfig.bCryptPasswordEncoder().encode(senhaNova));
         }
         return usersRepository.save(user);
+        }
     }
-
-}

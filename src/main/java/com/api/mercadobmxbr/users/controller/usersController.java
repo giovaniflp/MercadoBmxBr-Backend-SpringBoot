@@ -63,9 +63,12 @@ public class usersController {
         return usersService.deleteUser(id);
     }
 
-    @PatchMapping("/{id}")
-    public usersModel updateUser(@PathVariable String id, @RequestBody usersModel userData) {
-        return usersService.updateUser(id, userData);
+    @PatchMapping("/patch/{id}")
+    public usersModel patchUser(@RequestBody Map<String, String> requestBody, @PathVariable String id) {
+        String email = requestBody.get("email");
+        String name = requestBody.get("name");
+        String senhaAntiga = requestBody.get("senhaAntiga");
+        String senhaNova = requestBody.get("senhaNova");
+        return usersService.patchUser(id, name, email, senhaAntiga, senhaNova);
     }
-
 }
