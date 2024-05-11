@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class advertisementService {
@@ -113,4 +114,135 @@ public class advertisementService {
         }
         return null;
     }
+
+    @Transactional
+    public advertisementModel patchAdvertisement(String id, advertisementModel advertisementModel){
+        advertisementModel advertisement = advertisementRepository.findById(id);
+
+        advertisement.setDescricao(advertisementModel.getDescricao());
+        advertisement.setModelo(advertisementModel.getModelo());
+        java.time.LocalDate currentDate = java.time.LocalDate.now();
+        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        advertisement.setDataPostagem(formattedDate);
+
+        if(advertisementModel.getEstadoDaPeca() != null && !advertisementModel.getEstadoDaPeca().isEmpty()){
+            advertisement.setEstadoDaPeca(advertisementModel.getEstadoDaPeca());
+        }
+        if(advertisementModel.getGrauDeDesgaste() != null && !advertisementModel.getGrauDeDesgaste().isEmpty()){
+            advertisement.setGrauDeDesgaste(advertisementModel.getGrauDeDesgaste());
+        }
+        if(advertisementModel.getImagem() != null && !advertisementModel.getImagem().isEmpty()){
+            String imageUrl = advertisement.getImagem();
+            String fileName = extractFileNameFromUrl(imageUrl);
+            if (fileName != null) {
+                deleteImage(fileName);
+            }
+            advertisement.setImagem(advertisementModel.getImagem());
+        }
+        if(advertisementModel.getLocalidade() != null && !advertisementModel.getLocalidade().isEmpty()){
+            advertisement.setLocalidade(advertisementModel.getLocalidade());
+        }
+        if(advertisementModel.getPreco() != null && !advertisementModel.getPreco().isEmpty()){
+            advertisement.setPreco(advertisementModel.getPreco());
+        }
+        if(advertisementModel.getWhatsapp() != null && !advertisementModel.getWhatsapp().isEmpty()){
+            advertisement.setWhatsapp(advertisementModel.getWhatsapp());
+        }
+        if(advertisementModel.getCategoria() != null && !advertisementModel.getCategoria().isEmpty()){
+            advertisement.setCategoria(advertisementModel.getCategoria());
+        }
+        if(advertisementModel.getCor() != null && !advertisementModel.getCor().isEmpty()){
+            advertisement.setCor(advertisementModel.getCor());
+        }
+        if(advertisementModel.getMarca() != null && !advertisementModel.getMarca().isEmpty()){
+            advertisement.setMarca(advertisementModel.getMarca());
+        }
+        if(advertisementModel.getPeso() != null && !advertisementModel.getPeso().isEmpty()){
+            advertisement.setPeso(advertisementModel.getPeso());
+        }
+
+        //Não obrigatórios
+
+        advertisement.setAbracadeiraDiametro(advertisementModel.getAbracadeiraDiametro());
+        advertisement.setAroTipoFolha(advertisementModel.getAroTipoFolha());
+        advertisement.setAroFuros(advertisementModel.getAroFuros());
+        advertisement.setAroGrossura(advertisementModel.getAroGrossura());
+        advertisement.setBancoTipo(advertisementModel.getBancoTipo());
+        advertisement.setBancoCanoteTamanho(advertisementModel.getBancoCanoteTamanho());
+        advertisement.setBikeCompletaModalidade(advertisementModel.getBikeCompletaModalidade());
+        advertisement.setCamaraAroTamanho(advertisementModel.getCamaraAroTamanho());
+        advertisement.setCamaraTipoValvula(advertisementModel.getCamaraTipoValvula());
+        advertisement.setCanoteTipo(advertisementModel.getCanoteTipo());
+        advertisement.setCanoteTamanho(advertisementModel.getCanoteTamanho());
+        advertisement.setCoroaDentes(advertisementModel.getCoroaDentes());
+        advertisement.setCoroaProtetor(advertisementModel.getCoroaProtetor());
+        advertisement.setCoroaAdaptador(advertisementModel.getCoroaAdaptador());
+        advertisement.setCorrenteTipoElo(advertisementModel.getCorrenteTipoElo());
+        advertisement.setCuboDianteiroFuros(advertisementModel.getCuboDianteiroFuros());
+        advertisement.setCuboDianteiroTipoEixo(advertisementModel.getCuboDianteiroTipoEixo());
+        advertisement.setCuboDianteiroMaterialEixo(advertisementModel.getCuboDianteiroMaterialEixo());
+        advertisement.setCuboDianteiroMaterialParafusos(advertisementModel.getCuboDianteiroMaterialParafusos());
+        advertisement.setCuboDianteiroProtetor(advertisementModel.getCuboDianteiroProtetor());
+        advertisement.setTipoCubo(advertisementModel.getTipoCubo());
+        advertisement.setCuboTraseiroTracao(advertisementModel.getCuboTraseiroTracao());
+        advertisement.setCuboTraseiroCog(advertisementModel.getCuboTraseiroCog());
+        advertisement.setCuboTraseiroTravas(advertisementModel.getCuboTraseiroTravas());
+        advertisement.setCuboTraseiroFuros(advertisementModel.getCuboTraseiroFuros());
+        advertisement.setCuboTraseiroTipoEixo(advertisementModel.getCuboTraseiroTipoEixo());
+        advertisement.setCuboTraseiroMaterialEixo(advertisementModel.getCuboTraseiroMaterialEixo());
+        advertisement.setCuboTraseiroMaterialParafusos(advertisementModel.getCuboTraseiroMaterialParafusos());
+        advertisement.setCuboTraseiroProtetor(advertisementModel.getCuboTraseiroProtetor());
+        advertisement.setEixoCentralEstrias(advertisementModel.getEixoCentralEstrias());
+        advertisement.setEixoCentralTamanho(advertisementModel.getEixoCentralTamanho());
+        advertisement.setFreioPeca(advertisementModel.getFreioPeca());
+        advertisement.setGarfoOffset(advertisementModel.getGarfoOffset());
+        advertisement.setGarfoTampa(advertisementModel.getGarfoTampa());
+        advertisement.setGuidaoTamanho(advertisementModel.getGuidaoTamanho());
+        advertisement.setGuidaoLargura(advertisementModel.getGuidaoLargura());
+        advertisement.setGuidaoAngulo(advertisementModel.getGuidaoAngulo());
+        advertisement.setGuidaoTipo(advertisementModel.getGuidaoTipo());
+        advertisement.setManoplaTamanho(advertisementModel.getManoplaTamanho());
+        advertisement.setManoplaBarEnds(advertisementModel.getManoplaBarEnds());
+        advertisement.setMesaTamanho(advertisementModel.getMesaTamanho());
+        advertisement.setMesaAltura(advertisementModel.getMesaAltura());
+        advertisement.setMesaTipo(advertisementModel.getMesaTipo());
+        advertisement.setMesaFabricacao(advertisementModel.getMesaFabricacao());
+        advertisement.setMovimentoCentralTipo(advertisementModel.getMovimentoCentralTipo());
+        advertisement.setMovimentoCentralRolamento(advertisementModel.getMovimentoCentralRolamento());
+        advertisement.setMovimentoCentralAcompanha(advertisementModel.getMovimentoCentralAcompanha());
+        advertisement.setMovimentoDirecaoTipo(advertisementModel.getMovimentoDirecaoTipo());
+        advertisement.setMovimentoDirecaoTampa(advertisementModel.getMovimentoDirecaoTampa());
+        advertisement.setMovimentoDirecaoAcompanha(advertisementModel.getMovimentoDirecaoAcompanha());
+        advertisement.setPedalRosca(advertisementModel.getPedalRosca());
+        advertisement.setPedalConstrucao(advertisementModel.getPedalConstrucao());
+        advertisement.setPedaleiraQuantidade(advertisementModel.getPedaleiraQuantidade());
+        advertisement.setPedaleiraEncaixe(advertisementModel.getPedaleiraEncaixe());
+        advertisement.setPedaleiraTamanho(advertisementModel.getPedaleiraTamanho());
+        advertisement.setPedivelaTracao(advertisementModel.getPedivelaTracao());
+        advertisement.setPedivelaTamanho(advertisementModel.getPedivelaTamanho());
+        advertisement.setPedivelaRolamento(advertisementModel.getPedivelaRolamento());
+        advertisement.setPedivelaEstrias(advertisementModel.getPedivelaEstrias());
+        advertisement.setPedivelaAcompanha(advertisementModel.getPedivelaAcompanha());
+        advertisement.setPedivelaConstrucao(advertisementModel.getPedivelaConstrucao());
+        advertisement.setPneuAro(advertisementModel.getPneuAro());
+        advertisement.setPneuBandaLateral(advertisementModel.getPneuBandaLateral());
+        advertisement.setPneuIndicacao(advertisementModel.getPneuIndicacao());
+        advertisement.setPneuTamanho(advertisementModel.getPneuTamanho());
+        advertisement.setQuadroAbracadeira(advertisementModel.getQuadroAbracadeira());
+        advertisement.setQuadroCentral(advertisementModel.getQuadroCentral());
+        advertisement.setQuadroDirecao(advertisementModel.getQuadroDirecao());
+        advertisement.setQuadroEsticador(advertisementModel.getQuadroEsticador());
+        advertisement.setQuadroMedida(advertisementModel.getQuadroMedida());
+        advertisement.setQuadroModalidade(advertisementModel.getQuadroModalidade());
+        advertisement.setQuadroPinos(advertisementModel.getQuadroPinos());
+        advertisement.setQuadroTamanhoAro(advertisementModel.getQuadroTamanhoAro());
+        advertisement.setQuadroTolerancia(advertisementModel.getQuadroTolerancia());
+        advertisement.setProtetorLado(advertisementModel.getProtetorLado());
+        advertisement.setRaioTipo(advertisementModel.getRaioTipo());
+        advertisement.setRaioTamanho(advertisementModel.getRaioTamanho());
+
+
+        return advertisementRepository.save(advertisement);
+    }
+
 }

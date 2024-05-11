@@ -2,7 +2,9 @@ package com.api.mercadobmxbr.advertisement.controller;
 import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import com.api.mercadobmxbr.advertisement.service.advertisementService;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,8 +55,8 @@ public class advertisementController {
     }
 
     @PostMapping("/register")
-    public advertisementModel registerAdvertisement(@RequestBody advertisementModel advertisementData) {
-        return advertisementService.registerAdvertisement(advertisementData);
+    public advertisementModel registerAdvertisement(@RequestBody advertisementModel advertisementModel) {
+        return advertisementService.registerAdvertisement(advertisementModel);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -65,6 +67,11 @@ public class advertisementController {
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         return advertisementService.uploadImage(file);
+    }
+
+    @PatchMapping("/patch/{id}")
+    public advertisementModel patchAdvertisement(@RequestBody advertisementModel advertisementModel, @PathVariable String id) {
+        return advertisementService.patchAdvertisement(id, advertisementModel);
     }
 
 }
