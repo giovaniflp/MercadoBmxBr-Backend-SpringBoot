@@ -34,12 +34,20 @@ public class usersService {
     }
 
     @Transactional
-    public usersModel registerUser(usersModel userData) {
-        userData.setPassword(securityConfig.bCryptPasswordEncoder().encode(userData.getPassword()));
-        userData.setActivationSituation(false);
-        userData.setVerificationCode("");
-        emailService.enviarEmailDeTexto(userData.getEmail(), "Bem-vindo ao MercadoBmxBr", "Olá, " + userData.getName() + "! Seja bem-vindo ao MercadoBmxBr!");
-        return usersRepository.save(userData);
+    public String registerUser(usersModel userData) {
+        usersModel user = usersRepository.findByEmail(userData.getEmail());
+        if(user != null){
+            return "Email já cadastrado!";
+        } else if(userData.getPassword().length() < 6){
+            throw new RuntimeException("Senha deve ter no mínimo 6 caracteres!");
+        }  else{
+            userData.setPassword(securityConfig.bCryptPasswordEncoder().encode(userData.getPassword()));
+            userData.setActivationSituation(false);
+            userData.setVerificationCode("");
+            emailService.enviarEmailDeTexto(userData.getEmail(), "Bem-vindo ao MercadoBmxBr", "Olá, " + userData.getName() + "! Seja bem-vindo ao MercadoBmxBr!");
+            usersRepository.save(userData);
+            return "Usuário cadastrado com sucesso!";
+        }
     }
 
     @Transactional

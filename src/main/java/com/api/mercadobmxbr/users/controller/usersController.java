@@ -32,7 +32,7 @@ public class usersController {
 
     @PostMapping("/register")
     @PermitAll
-    public usersModel registerUser(@RequestBody usersModel userData) {
+    public String registerUser(@RequestBody usersModel userData) {
         return usersService.registerUser(userData);
     }
 
