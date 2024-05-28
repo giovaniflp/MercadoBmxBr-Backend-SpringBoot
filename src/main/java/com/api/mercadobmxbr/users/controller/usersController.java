@@ -43,12 +43,27 @@ public class usersController {
         usersService.verificationCode(email);
     }
 
+    @PostMapping("/sendCodeNewEmail")
+    @PermitAll
+    public void verificationCodeNewEmail(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        usersService.verificationCodeNewEmail(email);
+    }
+
     @PostMapping("/activate")
     @PermitAll
     public void activateUser(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String code = requestBody.get("code");
         usersService.activateUser(email, code);
+    }
+
+    @PostMapping("/activateNewEmail")
+    @PermitAll
+    public void activateNewEmail(@RequestBody Map<String, String> requestBody) {
+        String email = requestBody.get("email");
+        String code = requestBody.get("code");
+        usersService.activateNewEmail(email, code);
     }
 
     @PostMapping("/lostPassword")

@@ -20,6 +20,7 @@ public class usersModel {
     private String password;
     private String verificationCode;
     private Boolean activationSituation;
+    private String newEmail;
 
     public boolean isLoginCorrect(loginRequest loginRequest, PasswordEncoder passwordEncoder) {
         return passwordEncoder.matches(loginRequest.password(), this.password);

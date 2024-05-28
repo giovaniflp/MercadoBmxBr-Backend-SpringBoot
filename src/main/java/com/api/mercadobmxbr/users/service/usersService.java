@@ -60,6 +60,15 @@ public class usersService {
     }
 
     @Transactional
+    public void verificationCodeNewEmail(String newEmail) {
+        String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
+        usersModel user = usersRepository.findByNewEmail(newEmail);
+        user.setVerificationCode(codeGenerate);
+        usersRepository.save(user);
+        emailService.enviarEmailDeTexto(newEmail, "Código de verificação", "Seu código de verificação é: " + codeGenerate);
+    }
+
+    @Transactional
     public void lostPassword(String email) {
         String randomPassword = UUID.randomUUID().toString().substring(0, 6);
         usersModel user = usersRepository.findByEmail(email);
@@ -71,12 +80,34 @@ public class usersService {
     @Transactional
     public void activateUser(String email, String code) {
         usersModel user = usersRepository.findByEmail(email);
-        if (user.getVerificationCode().equals(code)) {
-            user.setActivationSituation(true);
-            usersRepository.save(user);
-        } else {
-            throw new RuntimeException("Código de verificação inválido!");
+        if(email == user.getNewEmail()){
+            if (user.getVerificationCode().equals(code)){
+                user.setEmail(user.getNewEmail());
+                user.setNewEmail("");
+                usersRepository.save(user);
+            } else {
+                throw new RuntimeException("Código de verificação inválido!");
+            }
+        } else{
+            if (user.getVerificationCode().equals(code)) {
+                user.setActivationSituation(true);
+                usersRepository.save(user);
+            } else {
+                throw new RuntimeException("Código de verificação inválido!");
+            }
         }
+    }
+
+    @Transactional
+    public void activateNewEmail(String newEmail, String code) {
+        usersModel user = usersRepository.findByNewEmail(newEmail);
+            if (user.getVerificationCode().equals(code)){
+                user.setEmail(user.getNewEmail());
+                user.setNewEmail("");
+                usersRepository.save(user);
+            } else {
+                throw new RuntimeException("Código de verificação inválido!");
+            }
     }
 
     @Transactional
@@ -86,21 +117,33 @@ public class usersService {
     }
 
     @Transactional
-    public usersModel patchUser(String id,  String name, String email, String senhaAntiga, String senhaNova) {
+    public usersModel patchUser(String id, String name, String email, String senhaAntiga, String senhaNova) {
         usersModel user = usersRepository.findById(id);
-        if(name != null && !name.isEmpty()){
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+
+        if (name != null && !name.isEmpty()) {
             user.setName(name);
         }
-        if(email != null && !email.isEmpty()){
+
+        if (email != null && !email.isEmpty()) {
             String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
-            user.setEmail(email);
-            user.setActivationSituation(false);
+            user.setNewEmail(email);
             user.setVerificationCode(codeGenerate);
             emailService.enviarEmailDeTexto(email, "Código de verificação", "Seu novo código de verificação é: " + codeGenerate);
         }
-        if(senhaNova != null && !senhaNova.isEmpty() && securityConfig.bCryptPasswordEncoder().matches(senhaAntiga, user.getPassword())){
-            user.setPassword(securityConfig.bCryptPasswordEncoder().encode(senhaNova));
+
+        if (senhaAntiga != null && !senhaAntiga.isEmpty()) {
+            if (!securityConfig.bCryptPasswordEncoder().matches(senhaAntiga, user.getPassword())) {
+                throw new RuntimeException("Senha antiga inválida!");
+            }
+
+            if (senhaNova != null && !senhaNova.isEmpty()) {
+                user.setPassword(securityConfig.bCryptPasswordEncoder().encode(senhaNova));
+            }
         }
+
         return usersRepository.save(user);
-        }
     }
+}

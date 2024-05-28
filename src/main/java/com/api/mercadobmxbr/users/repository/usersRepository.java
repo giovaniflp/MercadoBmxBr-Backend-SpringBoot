@@ -11,4 +11,5 @@ extends MongoRepository <usersModel, Integer> {
     usersModel findById(String id);
     void deleteById(String id);
     usersModel findByEmail(String email);
+    usersModel findByNewEmail(String newEmail);
 }
