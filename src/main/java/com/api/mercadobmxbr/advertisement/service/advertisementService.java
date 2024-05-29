@@ -7,6 +7,10 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,14 +31,21 @@ public class advertisementService {
         return advertisementRepository.findAll();
     }
 
+    public Page<advertisementModel> getAdvertisements(String categoria, int page, int size, String sortBy, boolean asc) {
+        Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return advertisementRepository.findByCategoria(categoria, pageable);
+    }
+
     @Transactional
     public advertisementModel findAdvertisementById(String id){
         return advertisementRepository.findById(id);
     }
 
     @Transactional
-    public List<advertisementModel> findAdvertisementByCategory(String category){
-        return advertisementRepository.findByCategoria(category);
+    public Page<advertisementModel> findAdvertisementByCategory(String category, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return advertisementRepository.findByCategoria(category, pageable);
     }
 
     @Transactional

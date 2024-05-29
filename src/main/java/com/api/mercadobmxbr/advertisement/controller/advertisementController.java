@@ -4,6 +4,7 @@ import com.api.mercadobmxbr.advertisement.service.advertisementService;
 
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,14 +25,27 @@ public class advertisementController {
         return advertisementService.findAllAdvertisements();
     }
 
+    @GetMapping("/pagination")
+    public Page<advertisementModel> getAdvertisements(
+            @RequestParam(defaultValue = "all") String categoria,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "preco") String sortBy,
+            @RequestParam(defaultValue = "true") boolean asc) {
+        return advertisementService.getAdvertisements(categoria, page, size, sortBy, asc);
+    }
+
     @GetMapping("/{id}")
     public advertisementModel findAdvertisementById(@PathVariable String id) {
         return advertisementService.findAdvertisementById(id);
     }
 
     @GetMapping("/category/{category}")
-    public List<advertisementModel> findAdvertisementByCategory(@PathVariable String category) {
-        return advertisementService.findAdvertisementByCategory(category);
+    public Page<advertisementModel> findAdvertisementByCategory(
+            @PathVariable String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return advertisementService.findAdvertisementByCategory(category, page, size);
     }
 
     @GetMapping("/category/{category}/localidade/{localidade}")
