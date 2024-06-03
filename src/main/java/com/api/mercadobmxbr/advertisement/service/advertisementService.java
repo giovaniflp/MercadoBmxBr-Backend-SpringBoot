@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,9 @@ public class advertisementService {
 
     @Autowired
     private advertisementRepository advertisementRepository;
+
+    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
+    private String azureConnectionString;
 
     @Transactional
     public List<advertisementModel> findAllAdvertisements() {
@@ -79,7 +83,7 @@ public class advertisementService {
     public String uploadImage(MultipartFile file) throws IOException {
 
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString("DefaultEndpointsProtocol=https;AccountName=mercadobmxbr;AccountKey=wv3hSdDl89gy9Fj2KzMCTuUfpjiywNyNyLg+HD2AJz9q8B7H1FUTYitjM94BjVfsxhMzr4r88iXt+AStwfdpVA==;EndpointSuffix=core.windows.net")
+                .connectionString(azureConnectionString)
                 .containerName("advertisements")
                 .buildClient();
 
@@ -109,7 +113,7 @@ public class advertisementService {
 
     private void deleteImage(String fileName) {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString("DefaultEndpointsProtocol=https;AccountName=mercadobmxbr;AccountKey=wv3hSdDl89gy9Fj2KzMCTuUfpjiywNyNyLg+HD2AJz9q8B7H1FUTYitjM94BjVfsxhMzr4r88iXt+AStwfdpVA==;EndpointSuffix=core.windows.net")
+                .connectionString(azureConnectionString)
                 .containerName("advertisements")
                 .buildClient();
 
