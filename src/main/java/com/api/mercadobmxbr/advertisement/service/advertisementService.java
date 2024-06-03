@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,13 @@ public class advertisementService {
     }
 
     @Transactional
+    public Page<advertisementModel> findAdvertisementByDataPostagemAndEstadoDaPeca(String estadoDaPeca, int page, int size) {
+        Sort sort = Sort.by("dataPostagem").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return advertisementRepository.findByEstadoDaPeca(estadoDaPeca, pageable);
+    }
+
+    @Transactional
     public List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade,  String estadoDaPeca, String category){
         return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, category);
     }
@@ -74,9 +82,7 @@ public class advertisementService {
 
     @Transactional
     public advertisementModel registerAdvertisement(advertisementModel advertisementModel){
-        java.time.LocalDate currentDate = java.time.LocalDate.now();
-        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        advertisementModel.setDataPostagem(formattedDate);
+        advertisementModel.setDataPostagem(new Date());;
         return advertisementRepository.save(advertisementModel);
     }
 
@@ -136,9 +142,7 @@ public class advertisementService {
 
         advertisement.setDescricao(advertisementModel.getDescricao());
         advertisement.setModelo(advertisementModel.getModelo());
-        java.time.LocalDate currentDate = java.time.LocalDate.now();
-        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        advertisement.setDataPostagem(formattedDate);
+        advertisementModel.setDataPostagem(new Date());
 
         if(advertisementModel.getEstadoDaPeca() != null && !advertisementModel.getEstadoDaPeca().isEmpty()){
             advertisement.setEstadoDaPeca(advertisementModel.getEstadoDaPeca());

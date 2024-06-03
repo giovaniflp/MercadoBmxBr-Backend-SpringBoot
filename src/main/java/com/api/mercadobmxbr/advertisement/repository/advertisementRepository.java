@@ -16,6 +16,8 @@ public interface advertisementRepository extends MongoRepository<advertisementMo
 
     Page<advertisementModel> findByCategoria(String categoria, Pageable pageable);
 
+    Page<advertisementModel> findByEstadoDaPeca(String estadoDaPeca,Pageable pageable);
+
     advertisementModel findById(String id);
     void deleteById(String id);
     List<advertisementModel> findByIdUsuario(String userId);

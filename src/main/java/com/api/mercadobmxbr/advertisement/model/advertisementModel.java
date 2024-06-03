@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,7 +37,9 @@ public class advertisementModel {
     @NotNull
     private String localidade;
     @NotNull
-    private String dataPostagem;
+    @CreatedDate
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private Date dataPostagem;
     //Estará hospedado na nuvem, então o que será salvo no banco é o link da imagem
     @NotNull
     private String imagem;

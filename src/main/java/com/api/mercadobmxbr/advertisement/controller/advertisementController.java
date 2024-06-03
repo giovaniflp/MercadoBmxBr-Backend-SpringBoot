@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -46,6 +47,12 @@ public class advertisementController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         return advertisementService.findAdvertisementByCategory(category, page, size);
+    }
+
+    @PostMapping("/dataPostagem/estadoDaPeca")
+    public Page<advertisementModel> findByDataPostagemAndEstadoDaPeca(@RequestBody Map<String, String> requestBody){
+        String estadoDaPeca = requestBody.get("estadoDaPeca");
+        return advertisementService.findAdvertisementByDataPostagemAndEstadoDaPeca(estadoDaPeca, 0, 5);
     }
 
     @GetMapping("/category/{category}/localidade/{localidade}")
