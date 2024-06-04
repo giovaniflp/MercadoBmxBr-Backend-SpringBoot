@@ -73,9 +73,10 @@ public class usersController {
         usersService.lostPassword(email);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable String id) {
-        return usersService.deleteUser(id);
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable String id, @RequestBody Map<String, String> requestBody) {
+        String password = requestBody.get("password");
+        return usersService.deleteUser(id, password);
     }
 
     @PatchMapping("/patch/{id}")

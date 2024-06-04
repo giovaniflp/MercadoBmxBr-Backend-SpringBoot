@@ -55,6 +55,12 @@ public class advertisementController {
         return advertisementService.findAdvertisementByDataPostagemAndEstadoDaPeca(estadoDaPeca, 0, 5);
     }
 
+    @PostMapping("/localidade")
+    public Page<advertisementModel> findByDataPostagemAndLocalidade(@RequestBody Map<String, String> requestBody){
+        String localidade = requestBody.get("localidade");
+        return advertisementService.findAdvertisementByLocalidade(localidade, 0, 5);
+    }
+
     @GetMapping("/category/{category}/localidade/{localidade}")
     public List<advertisementModel> findByLocalidadeAndCategoria(@PathVariable String localidade, @PathVariable String category){
         return advertisementService.findByLocalidadeAndCategoria(localidade, category);

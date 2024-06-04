@@ -10,6 +10,8 @@ import java.util.List;
 public interface favoriteRepository extends MongoRepository<favoriteModel, Integer> {
     void deleteById(String id);
     void deleteByIdAnuncio(String idAnuncio);
+    void deleteByIdUsuario(String idUsuario);
+
     favoriteModel findById(String id);
     List<favoriteModel> findByIdUsuario(String idUsuario);
 }

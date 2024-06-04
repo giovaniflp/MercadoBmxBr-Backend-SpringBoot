@@ -1,12 +1,19 @@
 package com.api.mercadobmxbr.users.service;
 
+import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import com.api.mercadobmxbr.users.repository.usersRepository;
+import com.api.mercadobmxbr.favorites.repository.favoriteRepository;
+import com.api.mercadobmxbr.advertisement.repository.advertisementRepository;
+
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.api.mercadobmxbr.users.model.usersModel;
 import org.springframework.transaction.annotation.Transactional;
 import com.api.mercadobmxbr.security.securityConfig;
-import com.api.mercadobmxbr.users.repository.tokenRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +23,15 @@ public class usersService {
 
     @Autowired
     private usersRepository usersRepository;
+
+    @Autowired
+    private favoriteRepository favoriteRepository;
+
+    @Autowired
+    private advertisementRepository advertisementRepository;
+
+    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
+    private String azureConnectionString;
 
     @Autowired
     private securityConfig securityConfig;
@@ -110,10 +126,47 @@ public class usersService {
             }
     }
 
+    private void deleteImage(String fileName) {
+        BlobContainerClient containerClient = new BlobContainerClientBuilder()
+                .connectionString(azureConnectionString)
+                .containerName("advertisements")
+                .buildClient();
+
+        BlobClient blob = containerClient.getBlobClient(fileName);
+        blob.delete();
+    }
+
+    private String extractFileNameFromUrl(String url) {
+        // Extract file name from the URL
+        int index = url.lastIndexOf("/");
+        if (index != -1) {
+            return url.substring(index + 1);
+        }
+        return null;
+    }
+
     @Transactional
-    public String deleteUser(String id) {
-        usersRepository.deleteById(id);
-        return "Usuário deletado com sucesso!";
+    public String deleteUser(String idUsuario, String password) {
+        usersModel user = usersRepository.findById(idUsuario);
+        if (!securityConfig.bCryptPasswordEncoder().matches(password, user.getPassword())) {
+            return("Senha errada!");
+        } else {
+            List<advertisementModel> advertisements = advertisementRepository.findByIdUsuario(idUsuario);
+            for (advertisementModel advertisement : advertisements) {
+                // Extract image file name from the URL
+                String imageUrl = advertisement.getImagem();
+                String fileName = extractFileNameFromUrl(imageUrl);
+
+                // Delete image from Azure storage
+                if (fileName != null) {
+                    deleteImage(fileName);
+                }
+            }
+            usersRepository.deleteById(idUsuario);
+            favoriteRepository.deleteByIdUsuario(idUsuario);
+            advertisementRepository.deleteByIdUsuario(idUsuario);
+            return "Usuário deletado com sucesso!";
+        }
     }
 
     @Transactional

@@ -17,10 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class advertisementService {
@@ -58,6 +56,13 @@ public class advertisementService {
         Sort sort = Sort.by("dataPostagem").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return advertisementRepository.findByEstadoDaPeca(estadoDaPeca, pageable);
+    }
+
+    @Transactional
+    public Page<advertisementModel> findAdvertisementByLocalidade(String localidade, int page, int size) {
+        Sort sort = Sort.by("dataPostagem").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return advertisementRepository.findByLocalidade(localidade, pageable);
     }
 
     @Transactional

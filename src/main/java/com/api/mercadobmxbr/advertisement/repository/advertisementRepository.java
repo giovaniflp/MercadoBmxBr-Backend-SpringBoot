@@ -13,14 +13,15 @@ import java.util.List;
 public interface advertisementRepository extends MongoRepository<advertisementModel, Integer> {
 
     Page<advertisementModel> findAll(Pageable pageable);
-
     Page<advertisementModel> findByCategoria(String categoria, Pageable pageable);
-
     Page<advertisementModel> findByEstadoDaPeca(String estadoDaPeca,Pageable pageable);
+    Page<advertisementModel> findByLocalidade(String localidade, Pageable pageable);
+
+    void deleteByIdUsuario(String idUsuario);
 
     advertisementModel findById(String id);
     void deleteById(String id);
-    List<advertisementModel> findByIdUsuario(String userId);
+    List<advertisementModel> findByIdUsuario(String idUsuario);
     List<advertisementModel> findByCategoria(String categoria);
 
     List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade, String estadoDaPeca, String category);
