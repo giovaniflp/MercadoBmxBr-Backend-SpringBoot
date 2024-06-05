@@ -33,7 +33,7 @@ public class advertisementModel {
     @NotNull
     private String cor;
     @NotNull
-    private String preco;
+    private Long preco;
     @NotNull
     private String localidade;
     @NotNull

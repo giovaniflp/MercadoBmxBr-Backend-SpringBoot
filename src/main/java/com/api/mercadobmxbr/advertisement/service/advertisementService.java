@@ -47,7 +47,8 @@ public class advertisementService {
 
     @Transactional
     public Page<advertisementModel> findAdvertisementByCategory(String category, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by("dataPostagem").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
         return advertisementRepository.findByCategoria(category, pageable);
     }
 
@@ -166,7 +167,7 @@ public class advertisementService {
         if(advertisementModel.getLocalidade() != null && !advertisementModel.getLocalidade().isEmpty()){
             advertisement.setLocalidade(advertisementModel.getLocalidade());
         }
-        if(advertisementModel.getPreco() != null && !advertisementModel.getPreco().isEmpty()){
+        if (advertisementModel.getPreco() != null) {
             advertisement.setPreco(advertisementModel.getPreco());
         }
         if(advertisementModel.getWhatsapp() != null && !advertisementModel.getWhatsapp().isEmpty()){
