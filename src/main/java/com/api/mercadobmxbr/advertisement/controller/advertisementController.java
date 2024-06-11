@@ -49,6 +49,16 @@ public class advertisementController {
         return advertisementService.findAdvertisementByCategory(category, page, size);
     }
 
+    @PostMapping("/category/{category}/filter")
+    public Page<advertisementModel> findAdvertisementByCategoryAndFilter(@PathVariable String category, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestBody Map<String, String> requestBody) {
+        String localidade = requestBody.get("localidade");
+        String estadoDaPeca = requestBody.get("estadoDaPeca");
+        String dataPostagem = requestBody.get("dataPostagem");
+        String marca = requestBody.get("marca");
+        String valor = requestBody.get("valor");
+        return advertisementService.findAdversitementByCategoryAndFilter(category, localidade, estadoDaPeca, dataPostagem, marca, valor, page, size);
+    }
+
     @PostMapping("/dataPostagem/estadoDaPeca")
     public Page<advertisementModel> findByDataPostagemAndEstadoDaPeca(@RequestBody Map<String, String> requestBody){
         String estadoDaPeca = requestBody.get("estadoDaPeca");
@@ -61,20 +71,6 @@ public class advertisementController {
         return advertisementService.findAdvertisementByLocalidade(localidade, 0, 5);
     }
 
-    @GetMapping("/category/{category}/localidade/{localidade}")
-    public List<advertisementModel> findByLocalidadeAndCategoria(@PathVariable String localidade, @PathVariable String category){
-        return advertisementService.findByLocalidadeAndCategoria(localidade, category);
-    }
-
-    @GetMapping("/category/{category}/estadoDaPeca/{estadoDaPeca}")
-    public List<advertisementModel> findByEstadoDaPecaAndCategoria(@PathVariable String estadoDaPeca, @PathVariable String category){
-        return advertisementService.findByEstadoDaPecaAndCategoria(estadoDaPeca, category);
-    }
-
-    @GetMapping("category/{category}/localidade/{localidade}/estadoDaPeca/{estadoDaPeca}")
-    public List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(@PathVariable String localidade, @PathVariable String estadoDaPeca, @PathVariable String category){
-        return advertisementService.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, category);
-    }
 
     @GetMapping("/user/{userId}")
     public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {

@@ -17,16 +17,18 @@ public interface advertisementRepository extends MongoRepository<advertisementMo
     Page<advertisementModel> findByEstadoDaPeca(String estadoDaPeca,Pageable pageable);
     Page<advertisementModel> findByLocalidade(String localidade, Pageable pageable);
 
+    Page<advertisementModel> findByLocalidadeAndCategoria(String localidade, String category, Pageable pageable);
+    Page<advertisementModel> findByEstadoDaPecaAndCategoria(String estadoDaPeca, String category, Pageable pageable);
+    Page<advertisementModel> findByMarcaAndCategoria(String marca, String category, Pageable pageable);
+    Page<advertisementModel> findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(String localidade, String estadoDaPeca, String marca, String category, Pageable pageable);
+    Page<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade, String estadoDaPeca, String category, Pageable pageable);
+    Page<advertisementModel> findByLocalidadeAndMarcaAndCategoria(String localidade, String marca, String category, Pageable pageable);
+    Page<advertisementModel> findByEstadoDaPecaAndMarcaAndCategoria(String estadoDaPeca, String marca, String category, Pageable pageable);
+
     void deleteByIdUsuario(String idUsuario);
 
     advertisementModel findById(String id);
     void deleteById(String id);
     List<advertisementModel> findByIdUsuario(String idUsuario);
-    List<advertisementModel> findByCategoria(String categoria);
 
-    List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade, String estadoDaPeca, String category);
-
-    List<advertisementModel> findByLocalidadeAndCategoria(String localidade, String category);
-
-    List<advertisementModel> findByEstadoDaPecaAndCategoria(String estadoDaPeca, String category);
 }

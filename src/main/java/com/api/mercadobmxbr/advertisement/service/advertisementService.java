@@ -53,6 +53,381 @@ public class advertisementService {
     }
 
     @Transactional
+    public Page<advertisementModel> findAdversitementByCategoryAndFilter(String categoria, String localidade, String estadoDaPeca, String dataPostagem, String marca, String valor, int page, int size){
+        if("Anúncios mais recentes".equals(dataPostagem) && valor == null) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if("Anúncios mais recentes".equals(dataPostagem) && "Menor Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if("Anúncios mais recentes".equals(dataPostagem) && "Maior Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.desc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if("Anúncios mais antigos".equals(dataPostagem) && valor == null) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("dataPostagem").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if("Anúncios mais antigos".equals(dataPostagem) && "Menor Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.asc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if("Anúncios mais antigos".equals(dataPostagem) && "Maior Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by(Sort.Order.asc("dataPostagem"), Sort.Order.desc("preco"));
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if(dataPostagem == null && "Menor Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("preco").ascending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if(dataPostagem == null && "Maior Valor".equals(valor)) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Sort sort = Sort.by("preco").descending();
+                Pageable pageable = PageRequest.of(page, size, sort);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        if(dataPostagem == null && valor == null) {
+            if(localidade != null && estadoDaPeca != null && marca != null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndMarcaAndCategoria(localidade, estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca != null && marca == null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca != null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByLocalidadeAndMarcaAndCategoria(localidade, marca, categoria, pageable);
+            }
+            if(localidade != null && estadoDaPeca == null && marca == null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByLocalidadeAndCategoria(localidade, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca != null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByEstadoDaPecaAndMarcaAndCategoria(estadoDaPeca, marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca != null && marca == null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca != null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByMarcaAndCategoria(marca, categoria, pageable);
+            }
+            if(localidade == null && estadoDaPeca == null && marca == null) {
+                Pageable pageable = PageRequest.of(page, size);
+                return advertisementRepository.findByCategoria(categoria, pageable);
+            }
+        }
+        return null;
+    }
+
+    @Transactional
     public Page<advertisementModel> findAdvertisementByDataPostagemAndEstadoDaPeca(String estadoDaPeca, int page, int size) {
         Sort sort = Sort.by("dataPostagem").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -67,28 +442,13 @@ public class advertisementService {
     }
 
     @Transactional
-    public List<advertisementModel> findByLocalidadeAndEstadoDaPecaAndCategoria(String localidade,  String estadoDaPeca, String category){
-        return advertisementRepository.findByLocalidadeAndEstadoDaPecaAndCategoria(localidade, estadoDaPeca, category);
-    }
-
-    @Transactional
-    public List<advertisementModel> findByLocalidadeAndCategoria(String localidade, String category){
-        return advertisementRepository.findByLocalidadeAndCategoria(localidade, category);
-    }
-
-    @Transactional
-    public List<advertisementModel> findByEstadoDaPecaAndCategoria(String estadoDaPeca, String category){
-        return advertisementRepository.findByEstadoDaPecaAndCategoria(estadoDaPeca, category);
-    }
-
-    @Transactional
     public List<advertisementModel> findAdvertisementByUser(String userId){
         return advertisementRepository.findByIdUsuario(userId);
     }
 
     @Transactional
     public advertisementModel registerAdvertisement(advertisementModel advertisementModel){
-        advertisementModel.setDataPostagem(new Date());;
+        advertisementModel.setDataPostagem(new Date());
         return advertisementRepository.save(advertisementModel);
     }
 
