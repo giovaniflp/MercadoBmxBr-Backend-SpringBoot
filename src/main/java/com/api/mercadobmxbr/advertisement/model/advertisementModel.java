@@ -1,16 +1,18 @@
 package com.api.mercadobmxbr.advertisement.model;
 
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.AllArgsConstructor;
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
-import java.util.Date;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +21,7 @@ import java.util.Date;
 public class advertisementModel {
     @NotNull
     @Id private String id;
-    //Not Null
+    //Não nulos
     @NotNull
     private String idUsuario;
     @NotNull
@@ -40,7 +42,6 @@ public class advertisementModel {
     @CreatedDate
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private Date dataPostagem;
-    //Estará hospedado na nuvem, então o que será salvo no banco é o link da imagem
     @NotNull
     private String imagem;
     @NotNull
@@ -56,7 +57,7 @@ public class advertisementModel {
     @NotNull
     private String whatsapp;
 
-    //Can be null
+    //Podem ser nulos
     @Nullable
     private String abracadeiraDiametro;
     @Nullable

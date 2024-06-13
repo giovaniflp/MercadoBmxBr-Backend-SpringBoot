@@ -1,16 +1,15 @@
 package com.api.mercadobmxbr.users.controller;
 
 import com.api.mercadobmxbr.users.model.usersModel;
-
-import jakarta.annotation.security.PermitAll;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import com.api.mercadobmxbr.users.service.usersService;
 
 import java.util.List;
 import java.util.Map;
 
-import com.api.mercadobmxbr.users.service.usersService;
+import jakarta.annotation.security.PermitAll;
+
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @CrossOrigin
@@ -73,12 +72,6 @@ public class usersController {
         usersService.lostPassword(email);
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable String id, @RequestBody Map<String, String> requestBody) {
-        String password = requestBody.get("password");
-        return usersService.deleteUser(id, password);
-    }
-
     @PatchMapping("/patch/{id}")
     public usersModel patchUser(@RequestBody Map<String, String> requestBody, @PathVariable String id) {
         String email = requestBody.get("email");
@@ -87,4 +80,12 @@ public class usersController {
         String senhaNova = requestBody.get("senhaNova");
         return usersService.patchUser(id, name, email, senhaAntiga, senhaNova);
     }
+
+    //Delete usando Post pois precisa passar a senha do usuário como parâmetro.
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable String id, @RequestBody Map<String, String> requestBody) {
+        String password = requestBody.get("password");
+        return usersService.deleteUser(id, password);
+    }
+
 }

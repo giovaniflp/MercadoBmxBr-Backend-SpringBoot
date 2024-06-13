@@ -1,22 +1,23 @@
 package com.api.mercadobmxbr.users.service;
 
-import com.api.mercadobmxbr.advertisement.model.advertisementModel;
+import com.api.mercadobmxbr.users.model.usersModel;
+import com.api.mercadobmxbr.security.securityConfig;
 import com.api.mercadobmxbr.users.repository.usersRepository;
+import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import com.api.mercadobmxbr.favorites.repository.favoriteRepository;
 import com.api.mercadobmxbr.advertisement.repository.advertisementRepository;
+
+import java.util.List;
+import java.util.UUID;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import com.api.mercadobmxbr.users.model.usersModel;
-import org.springframework.transaction.annotation.Transactional;
-import com.api.mercadobmxbr.security.securityConfig;
 
-import java.util.List;
-import java.util.UUID;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class usersService {
@@ -30,24 +31,14 @@ public class usersService {
     @Autowired
     private advertisementRepository advertisementRepository;
 
-    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
-    private String azureConnectionString;
-
     @Autowired
     private securityConfig securityConfig;
 
     @Autowired
     private emailService emailService;
 
-    @Transactional
-    public List<usersModel> findAllUsers() {
-        return usersRepository.findAll();
-    }
-
-    @Transactional
-    public usersModel findUserById(String id) {
-        return usersRepository.findById(id);
-    }
+    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
+    private String azureConnectionString;
 
     @Transactional
     public String registerUser(usersModel userData) {
@@ -67,30 +58,13 @@ public class usersService {
     }
 
     @Transactional
-    public void verificationCode(String email) {
-        String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
-        usersModel user = usersRepository.findByEmail(email);
-        user.setVerificationCode(codeGenerate);
-        usersRepository.save(user);
-        emailService.enviarEmailDeTexto(email, "Código de verificação", "Seu código de verificação é: " + codeGenerate);
+    public usersModel findUserById(String id) {
+        return usersRepository.findById(id);
     }
 
     @Transactional
-    public void verificationCodeNewEmail(String newEmail) {
-        String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
-        usersModel user = usersRepository.findByNewEmail(newEmail);
-        user.setVerificationCode(codeGenerate);
-        usersRepository.save(user);
-        emailService.enviarEmailDeTexto(newEmail, "Código de verificação", "Seu código de verificação é: " + codeGenerate);
-    }
-
-    @Transactional
-    public void lostPassword(String email) {
-        String randomPassword = UUID.randomUUID().toString().substring(0, 6);
-        usersModel user = usersRepository.findByEmail(email);
-        user.setPassword(securityConfig.bCryptPasswordEncoder().encode(randomPassword));
-        usersRepository.save(user);
-        emailService.enviarEmailDeTexto(email, "Recuperação de senha", "Quando logar troque para uma senha de sua escolha! sua senha provisória é essa: " + randomPassword);
+    public List<usersModel> findAllUsers() {
+        return usersRepository.findAll();
     }
 
     @Transactional
@@ -115,6 +89,33 @@ public class usersService {
     }
 
     @Transactional
+    public void lostPassword(String email) {
+        String randomPassword = UUID.randomUUID().toString().substring(0, 6);
+        usersModel user = usersRepository.findByEmail(email);
+        user.setPassword(securityConfig.bCryptPasswordEncoder().encode(randomPassword));
+        usersRepository.save(user);
+        emailService.enviarEmailDeTexto(email, "Recuperação de senha", "Quando logar troque para uma senha de sua escolha! sua senha provisória é essa: " + randomPassword);
+    }
+
+    @Transactional
+    public void verificationCode(String email) {
+        String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
+        usersModel user = usersRepository.findByEmail(email);
+        user.setVerificationCode(codeGenerate);
+        usersRepository.save(user);
+        emailService.enviarEmailDeTexto(email, "Código de verificação", "Seu código de verificação é: " + codeGenerate);
+    }
+
+    @Transactional
+    public void verificationCodeNewEmail(String newEmail) {
+        String codeGenerate = UUID.randomUUID().toString().substring(0, 6);
+        usersModel user = usersRepository.findByNewEmail(newEmail);
+        user.setVerificationCode(codeGenerate);
+        usersRepository.save(user);
+        emailService.enviarEmailDeTexto(newEmail, "Código de verificação", "Seu código de verificação é: " + codeGenerate);
+    }
+
+    @Transactional
     public void activateNewEmail(String newEmail, String code) {
         usersModel user = usersRepository.findByNewEmail(newEmail);
             if (user.getVerificationCode().equals(code)){
@@ -124,49 +125,6 @@ public class usersService {
             } else {
                 throw new RuntimeException("Código de verificação inválido!");
             }
-    }
-
-    private void deleteImage(String fileName) {
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString(azureConnectionString)
-                .containerName("advertisements")
-                .buildClient();
-
-        BlobClient blob = containerClient.getBlobClient(fileName);
-        blob.delete();
-    }
-
-    private String extractFileNameFromUrl(String url) {
-        // Extract file name from the URL
-        int index = url.lastIndexOf("/");
-        if (index != -1) {
-            return url.substring(index + 1);
-        }
-        return null;
-    }
-
-    @Transactional
-    public String deleteUser(String idUsuario, String password) {
-        usersModel user = usersRepository.findById(idUsuario);
-        if (!securityConfig.bCryptPasswordEncoder().matches(password, user.getPassword())) {
-            return("Senha errada!");
-        } else {
-            List<advertisementModel> advertisements = advertisementRepository.findByIdUsuario(idUsuario);
-            for (advertisementModel advertisement : advertisements) {
-                // Extract image file name from the URL
-                String imageUrl = advertisement.getImagem();
-                String fileName = extractFileNameFromUrl(imageUrl);
-
-                // Delete image from Azure storage
-                if (fileName != null) {
-                    deleteImage(fileName);
-                }
-            }
-            usersRepository.deleteById(idUsuario);
-            favoriteRepository.deleteByIdUsuario(idUsuario);
-            advertisementRepository.deleteByIdUsuario(idUsuario);
-            return "Usuário deletado com sucesso!";
-        }
     }
 
     @Transactional
@@ -199,4 +157,48 @@ public class usersService {
 
         return usersRepository.save(user);
     }
+
+    @Transactional
+    public String deleteUser(String idUsuario, String password) {
+        usersModel user = usersRepository.findById(idUsuario);
+        if (!securityConfig.bCryptPasswordEncoder().matches(password, user.getPassword())) {
+            return("Senha errada!");
+        } else {
+            List<advertisementModel> advertisements = advertisementRepository.findByIdUsuario(idUsuario);
+            for (advertisementModel advertisement : advertisements) {
+                // Extract image file name from the URL
+                String imageUrl = advertisement.getImagem();
+                String fileName = extractFileNameFromUrl(imageUrl);
+
+                // Delete image from Azure storage
+                if (fileName != null) {
+                    deleteImage(fileName);
+                }
+            }
+            usersRepository.deleteById(idUsuario);
+            favoriteRepository.deleteByIdUsuario(idUsuario);
+            advertisementRepository.deleteByIdUsuario(idUsuario);
+            return "Usuário deletado com sucesso!";
+        }
+    }
+
+    private String extractFileNameFromUrl(String url) {
+        // Extract file name from the URL
+        int index = url.lastIndexOf("/");
+        if (index != -1) {
+            return url.substring(index + 1);
+        }
+        return null;
+    }
+
+    private void deleteImage(String fileName) {
+        BlobContainerClient containerClient = new BlobContainerClientBuilder()
+                .connectionString(azureConnectionString)
+                .containerName("advertisements")
+                .buildClient();
+
+        BlobClient blob = containerClient.getBlobClient(fileName);
+        blob.delete();
+    }
+
 }

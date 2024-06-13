@@ -2,28 +2,45 @@ package com.api.mercadobmxbr.advertisement.controller;
 import com.api.mercadobmxbr.advertisement.model.advertisementModel;
 import com.api.mercadobmxbr.advertisement.service.advertisementService;
 
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Map;
+import java.util.List;
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/advertisements")
 public class advertisementController {
 
+    //Injentando o service (Dependência), pode ser usando new Constructor, instânciando direto ou @Autowired
     @Autowired
     private advertisementService advertisementService;
 
     @GetMapping("/all")
     public List<advertisementModel> findAllAdvertisements() {
         return advertisementService.findAllAdvertisements();
+    }
+
+    @GetMapping("/{id}")
+    public advertisementModel findAdvertisementById(@PathVariable String id) {
+        return advertisementService.findAdvertisementById(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {
+        return advertisementService.findAdvertisementByUser(userId);
+    }
+
+    @GetMapping("/category/{category}")
+    public Page<advertisementModel> findAdvertisementByCategory(
+            @PathVariable String category,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return advertisementService.findAdvertisementByCategory(category, page, size);
     }
 
     @GetMapping("/pagination")
@@ -36,17 +53,14 @@ public class advertisementController {
         return advertisementService.getAdvertisements(categoria, page, size, sortBy, asc);
     }
 
-    @GetMapping("/{id}")
-    public advertisementModel findAdvertisementById(@PathVariable String id) {
-        return advertisementService.findAdvertisementById(id);
+    @PostMapping("/register")
+    public advertisementModel registerAdvertisement(@RequestBody advertisementModel advertisementModel) {
+        return advertisementService.registerAdvertisement(advertisementModel);
     }
 
-    @GetMapping("/category/{category}")
-    public Page<advertisementModel> findAdvertisementByCategory(
-            @PathVariable String category,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return advertisementService.findAdvertisementByCategory(category, page, size);
+    @PostMapping("/upload")
+    public String uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
+        return advertisementService.uploadImage(file);
     }
 
     @PostMapping("/category/{category}/filter")
@@ -59,6 +73,18 @@ public class advertisementController {
         return advertisementService.findAdversitementByCategoryAndFilter(category, localidade, estadoDaPeca, dataPostagem, marca, valor, page, size);
     }
 
+    @PatchMapping("/patch/{id}")
+    public advertisementModel patchAdvertisement(@RequestBody advertisementModel advertisementModel, @PathVariable String id) {
+        return advertisementService.patchAdvertisement(id, advertisementModel);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteAdvertisement(@PathVariable String id) {
+        advertisementService.deleteAdvertisement(id);
+    }
+
+    //Analisar controllers abaixo e services para ver se necessita
+
     @PostMapping("/dataPostagem/estadoDaPeca")
     public Page<advertisementModel> findByDataPostagemAndEstadoDaPeca(@RequestBody Map<String, String> requestBody){
         String estadoDaPeca = requestBody.get("estadoDaPeca");
@@ -69,32 +95,6 @@ public class advertisementController {
     public Page<advertisementModel> findByDataPostagemAndLocalidade(@RequestBody Map<String, String> requestBody){
         String localidade = requestBody.get("localidade");
         return advertisementService.findAdvertisementByLocalidade(localidade, 0, 5);
-    }
-
-
-    @GetMapping("/user/{userId}")
-    public List<advertisementModel> findAdvertisementByUser(@PathVariable String userId) {
-        return advertisementService.findAdvertisementByUser(userId);
-    }
-
-    @PostMapping("/register")
-    public advertisementModel registerAdvertisement(@RequestBody advertisementModel advertisementModel) {
-        return advertisementService.registerAdvertisement(advertisementModel);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteAdvertisement(@PathVariable String id) {
-        advertisementService.deleteAdvertisement(id);
-    }
-
-    @PostMapping("/upload")
-    public String uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        return advertisementService.uploadImage(file);
-    }
-
-    @PatchMapping("/patch/{id}")
-    public advertisementModel patchAdvertisement(@RequestBody advertisementModel advertisementModel, @PathVariable String id) {
-        return advertisementService.patchAdvertisement(id, advertisementModel);
     }
 
 }

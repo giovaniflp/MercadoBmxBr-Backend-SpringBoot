@@ -1,17 +1,20 @@
 package com.api.mercadobmxbr.favorites.repository;
 
 import com.api.mercadobmxbr.favorites.model.favoriteModel;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
 @Repository
 public interface favoriteRepository extends MongoRepository<favoriteModel, Integer> {
-    void deleteById(String id);
+
+    favoriteModel findById(String id);
+
+    List<favoriteModel> findByIdUsuario(String idUsuario);
+
     void deleteByIdAnuncio(String idAnuncio);
     void deleteByIdUsuario(String idUsuario);
 
-    favoriteModel findById(String id);
-    List<favoriteModel> findByIdUsuario(String idUsuario);
 }
