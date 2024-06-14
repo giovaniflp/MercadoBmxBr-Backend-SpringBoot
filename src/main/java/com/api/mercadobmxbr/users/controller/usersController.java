@@ -19,11 +19,6 @@ public class usersController {
     @Autowired
     usersService usersService;
 
-    @GetMapping
-    public List<usersModel> findAllUsers() {
-        return usersService.findAllUsers();
-    }
-
     @GetMapping("/{id}")
     public usersModel findUserById(@PathVariable String id) {
         return usersService.findUserById(id);

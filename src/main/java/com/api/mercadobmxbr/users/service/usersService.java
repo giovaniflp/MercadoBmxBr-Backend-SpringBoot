@@ -63,11 +63,6 @@ public class usersService {
     }
 
     @Transactional
-    public List<usersModel> findAllUsers() {
-        return usersRepository.findAll();
-    }
-
-    @Transactional
     public void activateUser(String email, String code) {
         usersModel user = usersRepository.findByEmail(email);
         if(email == user.getNewEmail()){
