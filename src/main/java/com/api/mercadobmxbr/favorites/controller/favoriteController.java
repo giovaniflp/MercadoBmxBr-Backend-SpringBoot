@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/favorites")
 public class favoriteController {
 
+    private final favoriteService favoriteService;
+
     @Autowired
-    private favoriteService favoriteService;
+    public favoriteController(favoriteService favoriteService) {
+        this.favoriteService = favoriteService;
+    }
 
     @GetMapping("/{id}")
     public favoriteModel findFavoriteById(@PathVariable String id) {

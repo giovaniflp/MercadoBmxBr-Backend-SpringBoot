@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class favoriteService {
 
+    private final favoriteRepository favoriteRepository;
+
     @Autowired
-    private favoriteRepository favoriteRepository;
+    public favoriteService(favoriteRepository favoriteRepository) {
+        this.favoriteRepository = favoriteRepository;
+    }
 
     public favoriteModel findFavoriteById(String id){
         return favoriteRepository.findById(id);

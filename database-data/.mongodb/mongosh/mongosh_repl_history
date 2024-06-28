@@ -1,0 +1,12 @@
+show users
+use admin
+show dbs
+show users
+use admin
+show dbs
+show collections
+use mercadoBmxBr
+show dbs
+show
+show dbs
+ls

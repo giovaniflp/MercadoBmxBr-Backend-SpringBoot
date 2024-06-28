@@ -12,12 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/users")
 public class usersController {
 
+    private final usersService usersService;
+
     @Autowired
-    usersService usersService;
+    public usersController(usersService usersService) {
+        this.usersService = usersService;
+    }
 
     @GetMapping("/{id}")
     public usersModel findUserById(@PathVariable String id) {
@@ -25,27 +28,23 @@ public class usersController {
     }
 
     @PostMapping("/register")
-    @PermitAll
     public String registerUser(@RequestBody usersModel userData) {
         return usersService.registerUser(userData);
     }
 
     @PostMapping("/sendCode")
-    @PermitAll
     public void verificationCode(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         usersService.verificationCode(email);
     }
 
     @PostMapping("/sendCodeNewEmail")
-    @PermitAll
     public void verificationCodeNewEmail(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         usersService.verificationCodeNewEmail(email);
     }
 
     @PostMapping("/activate")
-    @PermitAll
     public void activateUser(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String code = requestBody.get("code");
@@ -53,7 +52,6 @@ public class usersController {
     }
 
     @PostMapping("/activateNewEmail")
-    @PermitAll
     public void activateNewEmail(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         String code = requestBody.get("code");
@@ -61,7 +59,6 @@ public class usersController {
     }
 
     @PostMapping("/lostPassword")
-    @PermitAll
     public void lostPassword(@RequestBody Map<String, String> requestBody) {
         String email = requestBody.get("email");
         usersService.lostPassword(email);

@@ -26,11 +26,14 @@ public class advertisementService {
 
     //Dar uma olhada nos services necessários
 
-    @Autowired
-    private advertisementRepository advertisementRepository;
+    private final advertisementRepository advertisementRepository;
 
-    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
-    private String azureConnectionString;
+    String connectionString = System.getenv("CONNECTION_STRING_AZURE_STORAGE_ACCOUNT");
+
+    @Autowired
+    public advertisementService(advertisementRepository advertisementRepository) {
+        this.advertisementRepository = advertisementRepository;
+    }
 
     @Transactional
     public advertisementModel findAdvertisementById(String id){
@@ -174,7 +177,7 @@ public class advertisementService {
     public String uploadImage(MultipartFile file) throws IOException {
 
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString(azureConnectionString)
+                .connectionString(connectionString)
                 .containerName("advertisements")
                 .buildClient();
 
@@ -213,7 +216,7 @@ public class advertisementService {
 
     private void deleteImage(String fileName) {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString(azureConnectionString)
+                .connectionString(connectionString)
                 .containerName("advertisements")
                 .buildClient();
 

@@ -9,17 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Service
 public class emailService {
 
-    @Autowired
-    JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
 
-    @Value("${spring.mail.username}")
-    private String remetente;
+    @Autowired
+    public emailService(JavaMailSender javaMailSender){
+        this.javaMailSender = javaMailSender;
+    }
 
     public void enviarEmailDeTexto(String destinatario, String assunto, String mensagem){
 
         try{
             SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setFrom(remetente);
+            mail.setFrom("mercadobmxbr@gmail.com");
             mail.setTo(destinatario);
             mail.setSubject(assunto);
             mail.setText(mensagem);

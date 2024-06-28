@@ -14,31 +14,36 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class usersService {
 
-    @Autowired
-    private usersRepository usersRepository;
+    private final usersRepository usersRepository;
+    private final favoriteRepository favoriteRepository;
+    private final advertisementRepository advertisementRepository;
+    private final securityConfig securityConfig;
+    private final emailService emailService;
+
+    String connectionString = System.getenv("CONNECTION_STRING_AZURE_STORAGE_ACCOUNT");
 
     @Autowired
-    private favoriteRepository favoriteRepository;
-
-    @Autowired
-    private advertisementRepository advertisementRepository;
-
-    @Autowired
-    private securityConfig securityConfig;
-
-    @Autowired
-    private emailService emailService;
-
-    @Value("${CONNECTION_STRING_AZURE_STORAGE_ACCOUNT}")
-    private String azureConnectionString;
+    public usersService(
+            usersRepository usersRepository,
+            favoriteRepository favoriteRepository,
+            advertisementRepository advertisementRepository,
+            securityConfig securityConfig,
+            emailService emailService
+    ) {
+        this.usersRepository = usersRepository;
+        this.favoriteRepository = favoriteRepository;
+        this.advertisementRepository = advertisementRepository;
+        this.securityConfig = securityConfig;
+        this.emailService = emailService;
+    }
 
     @Transactional
     public String registerUser(usersModel userData) {
@@ -188,7 +193,7 @@ public class usersService {
 
     private void deleteImage(String fileName) {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
-                .connectionString(azureConnectionString)
+                .connectionString(connectionString)
                 .containerName("advertisements")
                 .buildClient();
 

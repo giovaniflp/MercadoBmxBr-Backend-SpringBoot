@@ -7,18 +7,23 @@ import java.util.List;
 import java.io.IOException;
 
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/advertisements")
 public class advertisementController {
 
     //Injentando o service (Dependência), pode ser usando new Constructor, instânciando direto ou @Autowired
+    private final advertisementService advertisementService;
+
     @Autowired
-    private advertisementService advertisementService;
+    public advertisementController(advertisementService advertisementService) {
+        this.advertisementService = advertisementService;
+    }
 
     @GetMapping("/all")
     public List<advertisementModel> findAllAdvertisements() {

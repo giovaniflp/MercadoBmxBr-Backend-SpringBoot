@@ -1,7 +1,6 @@
 package com.api.mercadobmxbr.users.controller;
 
 import com.api.mercadobmxbr.users.service.loginRequest;
-import com.api.mercadobmxbr.users.service.usersService;
 import com.api.mercadobmxbr.users.service.loginResponse;
 
 import com.api.mercadobmxbr.users.repository.tokenRepository;
@@ -24,20 +23,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 @RequestMapping("/api/token")
 public class tokenController {
 
-    @Autowired
-    JwtEncoder jwtEncoder;
+    private final JwtEncoder jwtEncoder;
+    private final tokenRepository tokenRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    JwtDecoder jwtDecoder;
-
-    @Autowired
-    tokenRepository tokenRepository;
-
-    @Autowired
-    usersService usersService;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    public tokenController(JwtEncoder jwtEncoder, tokenRepository tokenRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.jwtEncoder = jwtEncoder;
+        this.tokenRepository = tokenRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<loginResponse> login(@RequestBody loginRequest loginRequest) {
